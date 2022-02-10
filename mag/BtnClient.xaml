@@ -1,0 +1,51 @@
+﻿<Window x:Class="mag.BtnClient"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:mag"
+        mc:Ignorable="d"
+        Title="BtnClient" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="StackLetters" Orientation="Horizontal" Background="{StaticResource ColorMain}" HorizontalAlignment="Right">
+            <TextBlock FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Margin="10" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown">Все</TextBlock>
+        </StackPanel>
+
+        <StackPanel x:Name="StackLette" Orientation="Vertical" Background="{StaticResource ColorMain}" HorizontalAlignment="Right" Width="47">
+            <Button x:Name="BtnAd" Content="Добавить" Click="BtnAd_Click"/>
+            <Button x:Name="BtnD" Content="Удалить" Click="BtnD_Click"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Background="{StaticResource ColorMain}" Grid.Row="1">
+            <TextBlock>Email</TextBlock>
+            <TextBox x:Name="TxtEmail" TextChanged="TxtEmail_TextChanged"></TextBox>
+            <TextBlock>Телефон</TextBlock>
+            <TextBox x:Name="TxtPhone" TextChanged="TxtPhone_TextChanged"></TextBox>
+        </StackPanel>
+
+        <DataGrid Grid.Row="2" x:Name="DataGridКлиенты" ColumnWidth="*" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectionChanged="DataGridКлиенты_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Фамилия" Binding="{Binding Фамилия}"/>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Имя}"/>
+                <DataGridTextColumn Header="Отчество" Binding="{Binding Отчество}"/>
+                <DataGridTextColumn Header="Адрес" Binding="{Binding Адрес}"/>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Телефон}"/>
+                <DataGridTextColumn Header="email" Binding="{Binding email}"/>
+                <DataGridTemplateColumn Header="Редактировать">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Button x:Name="BtnEditData" Click="BtnEditData_Click">Изменить</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

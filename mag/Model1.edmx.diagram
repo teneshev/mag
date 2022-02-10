@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ce8702b9c8b3459c98d2ff1a80346d94" Name="Diagram1">
+        <EntityTypeShape EntityType="magazinModel.tag" Width="1.5" PointX="3" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="magazinModel.TagClient" Width="1.5" PointX="5.25" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="magazinModel.Бренд" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="magazinModel.Заказ" Width="1.5" PointX="5.25" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="magazinModel.Клиенты" Width="1.5" PointX="3" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="magazinModel.Пол" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="magazinModel.страна" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="magazinModel.ТипТовара" Width="1.5" PointX="0.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="magazinModel.Товар" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="magazinModel.FK_TagClient_tag" ManuallyRouted="false" />
+        <AssociationConnector Association="magazinModel.FK_TagClient_Клиенты" ManuallyRouted="false" />
+        <AssociationConnector Association="magazinModel.FK_Товар_Бренд" ManuallyRouted="false" />
+        <AssociationConnector Association="magazinModel.FK_Заказ_Клиенты" ManuallyRouted="false" />
+        <AssociationConnector Association="magazinModel.FK_Заказ_Товар" ManuallyRouted="false" />
+        <AssociationConnector Association="magazinModel.FK_Товар_Пол" ManuallyRouted="false" />
+        <AssociationConnector Association="magazinModel.FK_Товар_страна" ManuallyRouted="false" />
+        <AssociationConnector Association="magazinModel.FK_Товар_ТипТовара" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

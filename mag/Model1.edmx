@@ -1,0 +1,593 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище magazinModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tag">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="Color" Type="nchar" MaxLength="6" />
+        </EntityType>
+        <EntityType Name="TagClient">
+          <Key>
+            <PropertyRef Name="CliendId" />
+            <PropertyRef Name="TagID" />
+          </Key>
+          <Property Name="CliendId" Type="int" Nullable="false" />
+          <Property Name="TagID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Бренд">
+          <Key>
+            <PropertyRef Name="id_бренд" />
+          </Key>
+          <Property Name="id_бренд" Type="int" Nullable="false" />
+          <Property Name="название" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Заказ">
+          <Key>
+            <PropertyRef Name="id_заказ" />
+          </Key>
+          <Property Name="id_заказ" Type="int" Nullable="false" />
+          <Property Name="id_клиента" Type="int" />
+          <Property Name="id_товара" Type="int" />
+          <Property Name="дата_покупки" Type="datetime" />
+          <Property Name="количество" Type="int" />
+          <Property Name="скидка" Type="float" />
+          <Property Name="итого" Type="money" />
+        </EntityType>
+        <EntityType Name="Клиенты">
+          <Key>
+            <PropertyRef Name="id_клиента" />
+          </Key>
+          <Property Name="id_клиента" Type="int" Nullable="false" />
+          <Property Name="Фамилия" Type="nvarchar" MaxLength="50" />
+          <Property Name="Имя" Type="nchar" MaxLength="10" />
+          <Property Name="Отчество" Type="nchar" MaxLength="10" />
+          <Property Name="Адрес" Type="nvarchar" MaxLength="50" />
+          <Property Name="Телефон" Type="nvarchar" MaxLength="50" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Пол">
+          <Key>
+            <PropertyRef Name="id_gender" />
+          </Key>
+          <Property Name="id_gender" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="страна">
+          <Key>
+            <PropertyRef Name="id_country" />
+          </Key>
+          <Property Name="id_country" Type="int" Nullable="false" />
+          <Property Name="названиестраны" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ТипТовара">
+          <Key>
+            <PropertyRef Name="id_тип" />
+          </Key>
+          <Property Name="id_тип" Type="int" Nullable="false" />
+          <Property Name="тип_одежды" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Товар">
+          <Key>
+            <PropertyRef Name="id_товар" />
+          </Key>
+          <Property Name="id_товар" Type="int" Nullable="false" />
+          <Property Name="название" Type="nvarchar" MaxLength="50" />
+          <Property Name="id_бренд" Type="int" />
+          <Property Name="id_тип" Type="int" />
+          <Property Name="стоимость" Type="money" />
+          <Property Name="Размер" Type="nvarchar" MaxLength="50" />
+          <Property Name="Страна_производства" Type="int" />
+          <Property Name="Пол" Type="nchar" MaxLength="1" />
+          <Property Name="состав" Type="nvarchar" MaxLength="50" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <Association Name="FK_TagClient_tag">
+          <End Role="tag" Type="Self.tag" Multiplicity="1" />
+          <End Role="TagClient" Type="Self.TagClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tag">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TagClient">
+              <PropertyRef Name="CliendId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagClient_Клиенты">
+          <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="1" />
+          <End Role="TagClient" Type="Self.TagClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиенты">
+              <PropertyRef Name="id_клиента" />
+            </Principal>
+            <Dependent Role="TagClient">
+              <PropertyRef Name="CliendId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Заказ_Клиенты">
+          <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="0..1" />
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиенты">
+              <PropertyRef Name="id_клиента" />
+            </Principal>
+            <Dependent Role="Заказ">
+              <PropertyRef Name="id_клиента" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Заказ_Товар">
+          <End Role="Товар" Type="Self.Товар" Multiplicity="0..1" />
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Товар">
+              <PropertyRef Name="id_товар" />
+            </Principal>
+            <Dependent Role="Заказ">
+              <PropertyRef Name="id_товара" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Товар_Бренд">
+          <End Role="Бренд" Type="Self.Бренд" Multiplicity="0..1" />
+          <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Бренд">
+              <PropertyRef Name="id_бренд" />
+            </Principal>
+            <Dependent Role="Товар">
+              <PropertyRef Name="id_бренд" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Товар_Пол">
+          <End Role="Пол" Type="Self.Пол" Multiplicity="0..1" />
+          <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Пол">
+              <PropertyRef Name="id_gender" />
+            </Principal>
+            <Dependent Role="Товар">
+              <PropertyRef Name="Пол" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Товар_страна">
+          <End Role="страна" Type="Self.страна" Multiplicity="0..1" />
+          <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="страна">
+              <PropertyRef Name="id_country" />
+            </Principal>
+            <Dependent Role="Товар">
+              <PropertyRef Name="Страна_производства" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Товар_ТипТовара">
+          <End Role="ТипТовара" Type="Self.ТипТовара" Multiplicity="0..1" />
+          <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ТипТовара">
+              <PropertyRef Name="id_тип" />
+            </Principal>
+            <Dependent Role="Товар">
+              <PropertyRef Name="id_тип" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище magazinModelContainer">
+          <EntitySet Name="tag" EntityType="Self.tag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TagClient" EntityType="Self.TagClient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Бренд" EntityType="Self.Бренд" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Заказ" EntityType="Self.Заказ" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Клиенты" EntityType="Self.Клиенты" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Пол" EntityType="Self.Пол" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="страна" EntityType="Self.страна" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ТипТовара" EntityType="Self.ТипТовара" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Товар" EntityType="Self.Товар" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TagClient_tag" Association="Self.FK_TagClient_tag">
+            <End Role="tag" EntitySet="tag" />
+            <End Role="TagClient" EntitySet="TagClient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagClient_Клиенты" Association="Self.FK_TagClient_Клиенты">
+            <End Role="Клиенты" EntitySet="Клиенты" />
+            <End Role="TagClient" EntitySet="TagClient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Заказ_Клиенты" Association="Self.FK_Заказ_Клиенты">
+            <End Role="Клиенты" EntitySet="Клиенты" />
+            <End Role="Заказ" EntitySet="Заказ" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Заказ_Товар" Association="Self.FK_Заказ_Товар">
+            <End Role="Товар" EntitySet="Товар" />
+            <End Role="Заказ" EntitySet="Заказ" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Товар_Бренд" Association="Self.FK_Товар_Бренд">
+            <End Role="Бренд" EntitySet="Бренд" />
+            <End Role="Товар" EntitySet="Товар" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Товар_Пол" Association="Self.FK_Товар_Пол">
+            <End Role="Пол" EntitySet="Пол" />
+            <End Role="Товар" EntitySet="Товар" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Товар_страна" Association="Self.FK_Товар_страна">
+            <End Role="страна" EntitySet="страна" />
+            <End Role="Товар" EntitySet="Товар" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Товар_ТипТовара" Association="Self.FK_Товар_ТипТовара">
+            <End Role="ТипТовара" EntitySet="ТипТовара" />
+            <End Role="Товар" EntitySet="Товар" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="magazinModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tag">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Color" Type="String" MaxLength="6" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="TagClient" Relationship="Self.FK_TagClient_tag" FromRole="tag" ToRole="TagClient" />
+        </EntityType>
+        <EntityType Name="TagClient">
+          <Key>
+            <PropertyRef Name="CliendId" />
+            <PropertyRef Name="TagID" />
+          </Key>
+          <Property Name="CliendId" Type="Int32" Nullable="false" />
+          <Property Name="TagID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tag" Relationship="Self.FK_TagClient_tag" FromRole="TagClient" ToRole="tag" />
+          <NavigationProperty Name="Клиенты" Relationship="Self.FK_TagClient_Клиенты" FromRole="TagClient" ToRole="Клиенты" />
+        </EntityType>
+        <EntityType Name="Бренд">
+          <Key>
+            <PropertyRef Name="id_бренд" />
+          </Key>
+          <Property Name="id_бренд" Type="Int32" Nullable="false" />
+          <Property Name="название" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Товар" Relationship="Self.FK_Товар_Бренд" FromRole="Бренд" ToRole="Товар" />
+        </EntityType>
+        <EntityType Name="Заказ">
+          <Key>
+            <PropertyRef Name="id_заказ" />
+          </Key>
+          <Property Name="id_заказ" Type="Int32" Nullable="false" />
+          <Property Name="id_клиента" Type="Int32" />
+          <Property Name="id_товара" Type="Int32" />
+          <Property Name="дата_покупки" Type="DateTime" Precision="3" />
+          <Property Name="количество" Type="Int32" />
+          <Property Name="скидка" Type="Double" />
+          <Property Name="итого" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Клиенты" Relationship="Self.FK_Заказ_Клиенты" FromRole="Заказ" ToRole="Клиенты" />
+          <NavigationProperty Name="Товар" Relationship="Self.FK_Заказ_Товар" FromRole="Заказ" ToRole="Товар" />
+        </EntityType>
+        <EntityType Name="Клиенты">
+          <Key>
+            <PropertyRef Name="id_клиента" />
+          </Key>
+          <Property Name="id_клиента" Type="Int32" Nullable="false" />
+          <Property Name="Фамилия" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Имя" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Отчество" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Адрес" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Телефон" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TagClient" Relationship="Self.FK_TagClient_Клиенты" FromRole="Клиенты" ToRole="TagClient" />
+          <NavigationProperty Name="Заказ" Relationship="Self.FK_Заказ_Клиенты" FromRole="Клиенты" ToRole="Заказ" />
+        </EntityType>
+        <EntityType Name="Пол">
+          <Key>
+            <PropertyRef Name="id_gender" />
+          </Key>
+          <Property Name="id_gender" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Товар" Relationship="Self.FK_Товар_Пол" FromRole="Пол" ToRole="Товар" />
+        </EntityType>
+        <EntityType Name="страна">
+          <Key>
+            <PropertyRef Name="id_country" />
+          </Key>
+          <Property Name="id_country" Type="Int32" Nullable="false" />
+          <Property Name="названиестраны" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Товар" Relationship="Self.FK_Товар_страна" FromRole="страна" ToRole="Товар" />
+        </EntityType>
+        <EntityType Name="ТипТовара">
+          <Key>
+            <PropertyRef Name="id_тип" />
+          </Key>
+          <Property Name="id_тип" Type="Int32" Nullable="false" />
+          <Property Name="тип_одежды" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Товар" Relationship="Self.FK_Товар_ТипТовара" FromRole="ТипТовара" ToRole="Товар" />
+        </EntityType>
+        <EntityType Name="Товар">
+          <Key>
+            <PropertyRef Name="id_товар" />
+          </Key>
+          <Property Name="id_товар" Type="Int32" Nullable="false" />
+          <Property Name="название" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="id_бренд" Type="Int32" />
+          <Property Name="id_тип" Type="Int32" />
+          <Property Name="стоимость" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Размер" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Страна_производства" Type="Int32" />
+          <Property Name="Пол" Type="String" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="состав" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Бренд" Relationship="Self.FK_Товар_Бренд" FromRole="Товар" ToRole="Бренд" />
+          <NavigationProperty Name="Заказ" Relationship="Self.FK_Заказ_Товар" FromRole="Товар" ToRole="Заказ" />
+          <NavigationProperty Name="Пол1" Relationship="Self.FK_Товар_Пол" FromRole="Товар" ToRole="Пол" />
+          <NavigationProperty Name="страна" Relationship="Self.FK_Товар_страна" FromRole="Товар" ToRole="страна" />
+          <NavigationProperty Name="ТипТовара" Relationship="Self.FK_Товар_ТипТовара" FromRole="Товар" ToRole="ТипТовара" />
+        </EntityType>
+        <Association Name="FK_TagClient_tag">
+          <End Role="tag" Type="Self.tag" Multiplicity="1" />
+          <End Role="TagClient" Type="Self.TagClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tag">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TagClient">
+              <PropertyRef Name="CliendId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagClient_Клиенты">
+          <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="1" />
+          <End Role="TagClient" Type="Self.TagClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиенты">
+              <PropertyRef Name="id_клиента" />
+            </Principal>
+            <Dependent Role="TagClient">
+              <PropertyRef Name="CliendId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Товар_Бренд">
+          <End Role="Бренд" Type="Self.Бренд" Multiplicity="0..1" />
+          <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Бренд">
+              <PropertyRef Name="id_бренд" />
+            </Principal>
+            <Dependent Role="Товар">
+              <PropertyRef Name="id_бренд" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Заказ_Клиенты">
+          <End Role="Клиенты" Type="Self.Клиенты" Multiplicity="0..1" />
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Клиенты">
+              <PropertyRef Name="id_клиента" />
+            </Principal>
+            <Dependent Role="Заказ">
+              <PropertyRef Name="id_клиента" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Заказ_Товар">
+          <End Role="Товар" Type="Self.Товар" Multiplicity="0..1" />
+          <End Role="Заказ" Type="Self.Заказ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Товар">
+              <PropertyRef Name="id_товар" />
+            </Principal>
+            <Dependent Role="Заказ">
+              <PropertyRef Name="id_товара" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Товар_Пол">
+          <End Role="Пол" Type="Self.Пол" Multiplicity="0..1" />
+          <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Пол">
+              <PropertyRef Name="id_gender" />
+            </Principal>
+            <Dependent Role="Товар">
+              <PropertyRef Name="Пол" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Товар_страна">
+          <End Role="страна" Type="Self.страна" Multiplicity="0..1" />
+          <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="страна">
+              <PropertyRef Name="id_country" />
+            </Principal>
+            <Dependent Role="Товар">
+              <PropertyRef Name="Страна_производства" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Товар_ТипТовара">
+          <End Role="ТипТовара" Type="Self.ТипТовара" Multiplicity="0..1" />
+          <End Role="Товар" Type="Self.Товар" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ТипТовара">
+              <PropertyRef Name="id_тип" />
+            </Principal>
+            <Dependent Role="Товар">
+              <PropertyRef Name="id_тип" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="magazinEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tag" EntityType="Self.tag" />
+          <EntitySet Name="TagClient" EntityType="Self.TagClient" />
+          <EntitySet Name="Бренд" EntityType="Self.Бренд" />
+          <EntitySet Name="Заказ" EntityType="Self.Заказ" />
+          <EntitySet Name="Клиенты" EntityType="Self.Клиенты" />
+          <EntitySet Name="Пол" EntityType="Self.Пол" />
+          <EntitySet Name="страна" EntityType="Self.страна" />
+          <EntitySet Name="ТипТовара" EntityType="Self.ТипТовара" />
+          <EntitySet Name="Товар" EntityType="Self.Товар" />
+          <AssociationSet Name="FK_TagClient_tag" Association="Self.FK_TagClient_tag">
+            <End Role="tag" EntitySet="tag" />
+            <End Role="TagClient" EntitySet="TagClient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagClient_Клиенты" Association="Self.FK_TagClient_Клиенты">
+            <End Role="Клиенты" EntitySet="Клиенты" />
+            <End Role="TagClient" EntitySet="TagClient" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Товар_Бренд" Association="Self.FK_Товар_Бренд">
+            <End Role="Бренд" EntitySet="Бренд" />
+            <End Role="Товар" EntitySet="Товар" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Заказ_Клиенты" Association="Self.FK_Заказ_Клиенты">
+            <End Role="Клиенты" EntitySet="Клиенты" />
+            <End Role="Заказ" EntitySet="Заказ" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Заказ_Товар" Association="Self.FK_Заказ_Товар">
+            <End Role="Товар" EntitySet="Товар" />
+            <End Role="Заказ" EntitySet="Заказ" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Товар_Пол" Association="Self.FK_Товар_Пол">
+            <End Role="Пол" EntitySet="Пол" />
+            <End Role="Товар" EntitySet="Товар" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Товар_страна" Association="Self.FK_Товар_страна">
+            <End Role="страна" EntitySet="страна" />
+            <End Role="Товар" EntitySet="Товар" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Товар_ТипТовара" Association="Self.FK_Товар_ТипТовара">
+            <End Role="ТипТовара" EntitySet="ТипТовара" />
+            <End Role="Товар" EntitySet="Товар" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище magazinModelContainer" CdmEntityContainer="magazinEntities">
+          <EntitySetMapping Name="tag">
+            <EntityTypeMapping TypeName="magazinModel.tag">
+              <MappingFragment StoreEntitySet="tag">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TagClient">
+            <EntityTypeMapping TypeName="magazinModel.TagClient">
+              <MappingFragment StoreEntitySet="TagClient">
+                <ScalarProperty Name="CliendId" ColumnName="CliendId" />
+                <ScalarProperty Name="TagID" ColumnName="TagID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Бренд">
+            <EntityTypeMapping TypeName="magazinModel.Бренд">
+              <MappingFragment StoreEntitySet="Бренд">
+                <ScalarProperty Name="id_бренд" ColumnName="id_бренд" />
+                <ScalarProperty Name="название" ColumnName="название" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Заказ">
+            <EntityTypeMapping TypeName="magazinModel.Заказ">
+              <MappingFragment StoreEntitySet="Заказ">
+                <ScalarProperty Name="id_заказ" ColumnName="id_заказ" />
+                <ScalarProperty Name="id_клиента" ColumnName="id_клиента" />
+                <ScalarProperty Name="id_товара" ColumnName="id_товара" />
+                <ScalarProperty Name="дата_покупки" ColumnName="дата_покупки" />
+                <ScalarProperty Name="количество" ColumnName="количество" />
+                <ScalarProperty Name="скидка" ColumnName="скидка" />
+                <ScalarProperty Name="итого" ColumnName="итого" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Клиенты">
+            <EntityTypeMapping TypeName="magazinModel.Клиенты">
+              <MappingFragment StoreEntitySet="Клиенты">
+                <ScalarProperty Name="id_клиента" ColumnName="id_клиента" />
+                <ScalarProperty Name="Фамилия" ColumnName="Фамилия" />
+                <ScalarProperty Name="Имя" ColumnName="Имя" />
+                <ScalarProperty Name="Отчество" ColumnName="Отчество" />
+                <ScalarProperty Name="Адрес" ColumnName="Адрес" />
+                <ScalarProperty Name="Телефон" ColumnName="Телефон" />
+                <ScalarProperty Name="email" ColumnName="email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Пол">
+            <EntityTypeMapping TypeName="magazinModel.Пол">
+              <MappingFragment StoreEntitySet="Пол">
+                <ScalarProperty Name="id_gender" ColumnName="id_gender" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="страна">
+            <EntityTypeMapping TypeName="magazinModel.страна">
+              <MappingFragment StoreEntitySet="страна">
+                <ScalarProperty Name="id_country" ColumnName="id_country" />
+                <ScalarProperty Name="названиестраны" ColumnName="названиестраны" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ТипТовара">
+            <EntityTypeMapping TypeName="magazinModel.ТипТовара">
+              <MappingFragment StoreEntitySet="ТипТовара">
+                <ScalarProperty Name="id_тип" ColumnName="id_тип" />
+                <ScalarProperty Name="тип_одежды" ColumnName="тип_одежды" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Товар">
+            <EntityTypeMapping TypeName="magazinModel.Товар">
+              <MappingFragment StoreEntitySet="Товар">
+                <ScalarProperty Name="id_товар" ColumnName="id_товар" />
+                <ScalarProperty Name="название" ColumnName="название" />
+                <ScalarProperty Name="id_бренд" ColumnName="id_бренд" />
+                <ScalarProperty Name="id_тип" ColumnName="id_тип" />
+                <ScalarProperty Name="стоимость" ColumnName="стоимость" />
+                <ScalarProperty Name="Размер" ColumnName="Размер" />
+                <ScalarProperty Name="Страна_производства" ColumnName="Страна_производства" />
+                <ScalarProperty Name="Пол" ColumnName="Пол" />
+                <ScalarProperty Name="состав" ColumnName="состав" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
